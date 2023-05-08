@@ -5,14 +5,20 @@ class Play extends Phaser.Scene {
 
     preload() {
         //load images/tile sprites
-        this.load.image('dude', './assets/dude.png');
+        this.load.image('box', './assets/dude.png');
     }
 
     create() {
 
         //define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
+
+
+
+        this.dude = new Dude(this,200,200,'box').setOrigin(0.5);
 
         //initialize score
         this.score = 0;
@@ -38,6 +44,13 @@ class Play extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
             this.scene.start("gameOverScene");
+            //this.dude.moveUp();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyUP)){
+            this.dude.moveUp();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyDOWN)){
+            this.dude.moveDown();
         }
     }
 
