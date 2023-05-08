@@ -5,6 +5,7 @@ class GameOver extends Phaser.Scene {
 
     preload() {
     }
+    
 
     create() {
         let menuConfig = {

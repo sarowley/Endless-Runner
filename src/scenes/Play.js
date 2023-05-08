@@ -5,12 +5,14 @@ class Play extends Phaser.Scene {
 
     preload() {
         //load images/tile sprites
+        this.load.image('dude', './assets/dude.png');
     }
 
     create() {
 
         //define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
 
         //initialize score
         this.score = 0;
