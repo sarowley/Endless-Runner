@@ -19,11 +19,18 @@ class Play extends Phaser.Scene {
         this.gameOver = false;
 
         this.dude = new Dude(this,200,200,'box').setOrigin(0.5);
-        this.rock = new Dude(this, 500, 400,'box').setOrigin(0.5);
 
-        this.physics.add.overlap(this.dude, this.rock, this.donezo, null, this);
-        //this.physics.add.collider(this.dude, this.rock);
-        //this.rock = this.physics.add.staticGroup();
+        this.rockGroup = this.add.group({
+            runChildUpdate: true
+        });
+
+        this.time.delayedCall(2500, () => {
+            this.addRock();
+        });
+        //this.rock = new Dude(this, 500, 400,'box').setOrigin(0.5);
+
+        //this.physics.add.overlap(this.dude, this.rock, this.donezo, null, this);
+
 
         //initialize score
         this.score = 0;
@@ -57,6 +64,11 @@ class Play extends Phaser.Scene {
         // });
     }
 
+    addRock(){
+        let rock = new Rock(this, -40);
+        this.rockGroup.add(rock);
+    }
+
     update() {
 
         if (this.gameOver){
@@ -66,6 +78,8 @@ class Play extends Phaser.Scene {
                 this.scene.start("gameOverScene");
             }, null, this);
         }
+
+        this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
 
         if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
             this.scene.start("gameOverScene");
@@ -78,8 +92,8 @@ class Play extends Phaser.Scene {
             this.dude.moveDown();
         }
 
-        if (this.gameOver != true) {
-            this.rock.moveLeft();
+        if (this.gameOver == true) {
+            //this.rock.moveLeft();
         }
 
         // this.input.keyboard.on('keycombomatch', (combo, event) => {
