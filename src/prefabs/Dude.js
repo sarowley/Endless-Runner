@@ -17,4 +17,7 @@ class Dude extends Phaser.Physics.Arcade.Sprite{
             this.y += this.moveSpeed;
         }
     }
+    moveLeft(){
+        this.x -= 5
+    }
 }
