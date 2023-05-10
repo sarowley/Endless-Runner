@@ -4,16 +4,16 @@ class Dude extends Phaser.Physics.Arcade.Sprite{
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.moveSpeed = 50;
+        this.moveSpeed = 100;
     }
 
     moveUp(){
-        if (this.y > 200){
+        if (this.y > 75){
             this.y -= this.moveSpeed;
         }
     }
     moveDown(){
-        if (this.y < 500){
+        if (this.y < 275){
             this.y += this.moveSpeed;
         }
     }

@@ -17,8 +17,10 @@ class Play extends Phaser.Scene {
 
 
         this.gameOver = false;
+        this.move_up = false;
+        this.move_down = false;
 
-        this.dude = new Dude(this,200,200,'box').setOrigin(0.5);
+        this.dude = new Dude(this,150,175,'box').setOrigin(0.5);
 
         this.rockGroup = this.add.group({
             runChildUpdate: true
@@ -27,17 +29,12 @@ class Play extends Phaser.Scene {
         this.time.delayedCall(2500, () => {
             this.addRock();
         });
-        //this.rock = new Dude(this, 500, 400,'box').setOrigin(0.5);
 
-        //this.physics.add.overlap(this.dude, this.rock, this.donezo, null, this);
-
-
-        //initialize score
         this.score = 0;
 
         let scoreConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '20px',
             backgroundColor: '#F3B141',
             color: '#843605',
             align: 'right',
@@ -47,21 +44,138 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(100, 100, this.score, scoreConfig).setOrigin(0.5);
-        //game over flag
+        this.scoreLeft = this.add.text(75, 25, this.score, scoreConfig).setOrigin(0.5);
 
-        // let facadeCombo = this.input.keyboard.createCombo('skull', {
-        //     resetOnWrongKey: true,  // if they press the wrong key is the combo reset?
-        //     maxKeyDelay: 0,         // max delay (ms) between each key press (0 = disabled)
-        //     resetOnMatch: true,     // if matched before, does pressing first key of combo reset?
-        //     deleteOnMatch: false    // if combo matches, will it delete itself?
-        // });
+        let wordConfig = {
+            fontFamily: 'Courier',
+            fontSize: '20px',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+        }
 
-        // this.input.keyboard.on('keycombomatch', (combo, event) => {
-        //     if (combo === facadeCombo) { 
-        //         this.add.sprite(0,0, 'skull').setRandomPosition();
-        //     }  
-        // });
+        //i am genuinely sorry for the below mess of code, 
+        //but i just couldn't get it to work the way i wanted 
+        //and this was the closest i could get it to my creative vision. sorry :(
+        let up_word = 'up';
+        let up_word1 = 'bummer';
+        let up_word2 = 'howdy';
+        let up_word3 = 'yeowch';
+        let up_word4 = 'dog';
+
+        this.up_word_text = this.add.text(250, 25, 'up', wordConfig).setOrigin(0.5);
+        this.up_word_text1 = this.add.text(250, 25, 'bummer', wordConfig).setOrigin(0.5);
+        this.up_word_text1.visible = false;
+        this.up_word_text2 = this.add.text(250, 25, 'howdy', wordConfig).setOrigin(0.5);
+        this.up_word_text2.visible = false;
+        this.up_word_text3 = this.add.text(250, 25, 'yeowch', wordConfig).setOrigin(0.5);
+        this.up_word_text3.visible = false;
+        this.up_word_text4 = this.add.text(250, 25, 'dog', wordConfig).setOrigin(0.5);
+        this.up_word_text4.visible = false;
+            
+        let up_key = this.input.keyboard.createCombo(up_word, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let up_key1 = this.input.keyboard.createCombo(up_word1, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let up_key2 = this.input.keyboard.createCombo(up_word2, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let up_key3 = this.input.keyboard.createCombo(up_word3, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let up_key4 = this.input.keyboard.createCombo(up_word4, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        this.input.keyboard.on('keycombomatch', (combo, event) => {
+            if (combo === up_key || combo === up_key1 || combo === up_key2 || combo === up_key3 || combo === up_key4) { 
+                this.move_up = true;
+            }  
+        });
+
+
+        //first half of disgusting code done
+        let down_word = 'down';
+        let down_word1 = 'dude';
+        let down_word2 = 'cat';
+        let down_word3 = 'light';
+        let down_word4 = 'music';
+
+        this.down_word_text = this.add.text(250, 325, 'down', wordConfig).setOrigin(0.5);
+        this.down_word_text1 = this.add.text(250, 325, 'dude', wordConfig).setOrigin(0.5);
+        this.down_word_text1.visible = false;
+        this.down_word_text2 = this.add.text(250, 325, 'cat', wordConfig).setOrigin(0.5);
+        this.down_word_text2.visible = false;
+        this.down_word_text3 = this.add.text(250, 325, 'light', wordConfig).setOrigin(0.5);
+        this.down_word_text3.visible = false;
+        this.down_word_text4 = this.add.text(250, 325, 'music', wordConfig).setOrigin(0.5);
+        this.down_word_text4.visible = false;
+
+        let down_key = this.input.keyboard.createCombo(down_word, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let down_key1 = this.input.keyboard.createCombo(down_word1, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let down_key2 = this.input.keyboard.createCombo(down_word2, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let down_key3 = this.input.keyboard.createCombo(down_word3, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        let down_key4 = this.input.keyboard.createCombo(down_word4, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+
+        this.input.keyboard.on('keycombomatch', (combo, event) => {
+            if (combo === down_key || combo === down_key1 || combo === down_key2 || combo === down_key3 || combo === down_key4) { 
+                this.move_down = true;
+            }  
+        });
+        //end of block of code for words
 
         this.min_point = 0;
         this.max_point = 100;
@@ -75,10 +189,13 @@ class Play extends Phaser.Scene {
         }
     }
 
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+
     update() {
 
         if (this.gameOver){
-            //console.log("starting clock??")
             this.clock = this.time.delayedCall(3000, () => {
                 this.gameOver = false;
                 this.scene.start("gameOverScene");
@@ -93,26 +210,16 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
 
-        if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
-            this.scene.start("gameOverScene");
-            //this.dude.moveUp();
-        }
-        if (this.gameOver != true && Phaser.Input.Keyboard.JustDown(keyUP)){
+        if (this.gameOver != true && this.move_up){
             this.dude.moveUp();
+            this.set_up_invis();
+            this.move_up = false;
         }
-        if (this.gameOver != true && Phaser.Input.Keyboard.JustDown(keyDOWN)){
+        if (this.gameOver != true && this.move_down){
             this.dude.moveDown();
+            this.set_down_invis();
+            this.move_down = false;
         }
-
-        if (this.gameOver == true) {
-            //this.rock.moveLeft();
-        }
-
-        // this.input.keyboard.on('keycombomatch', (combo, event) => {
-        //     if (combo === facadeCombo) { 
-        //         this.add.sprite(0,0, 'skull').setRandomPosition();
-        //     }  
-        // });
 
         if (this.gameOver != true) {
             this.score += .05;
@@ -121,10 +228,61 @@ class Play extends Phaser.Scene {
     }
 
     donezo (){
-        console.log("game over");
-        //console.log(gameOver);
         this.gameOver = true;
-        //console.log(gameOver);
+    }
+
+    set_up_invis (){
+        this.up_word_text.visible = false;
+        this.up_word_text1.visible = false;
+        this.up_word_text2.visible = false;
+        this.up_word_text3.visible = false;
+        this.up_word_text4.visible = false;
+
+        let int = this.getRandomInt(4);
+        console.log('up int: ', int)
+
+        if (int == 0) {
+            this.up_word_text.visible = true;
+        }
+        if (int == 1) {
+            this.up_word_text1.visible = true;
+        }
+        if (int == 2) {
+            this.up_word_text2.visible = true;
+        }
+        if (int == 3) {
+            this.up_word_text3.visible = true;
+        }
+        if (int == 4) {
+            this.up_word_text4.visible = true;
+        }
+    }
+
+    set_down_invis (){
+        this.down_word_text.visible = false;
+        this.down_word_text1.visible = false;
+        this.down_word_text2.visible = false;
+        this.down_word_text3.visible = false;
+        this.down_word_text4.visible = false;
+
+        let int = this.getRandomInt(4);
+        console.log('down int: ', int)
+
+        if (int == 0) {
+            this.down_word_text.visible = true;
+        }
+        if (int == 1) {
+            this.down_word_text1.visible = true;
+        }
+        if (int == 2) {
+            this.down_word_text2.visible = true;
+        }
+        if (int == 3) {
+            this.down_word_text3.visible = true;
+        }
+        if (int == 4) {
+            this.down_word_text4.visible = true;
+        }
     }
 
 }
