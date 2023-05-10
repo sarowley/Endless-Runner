@@ -46,12 +46,11 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(75, 25, this.score, scoreConfig).setOrigin(0.5);
 
-
-        //this.direction = 0;
-        //this.string = 'yo';
-        this.word_array = ['yo', 'up', 'cat', 'dog', 'woop', 'help', 'howdy']
+        this.up_word_array = ['yo', 'up', 'cat', 'dog', 'woop', 'help', 'howdy']
+        this.down_word_array = ['woah', 'down', 'apple', 'dude', 'super', 'bummer', 'surf']
         this.num = this.getRandomInt(7);
-        this.word = new KeyComboObject(this.word_array[this.num]);
+        this.up_word = new KeyComboObject(this.up_word_array[this.num]);
+        this.down_word = new KeyComboObject(this.down_word_array[this.num]);
 
         let wordConfig = {
             fontFamily: 'Courier',
@@ -64,15 +63,23 @@ class Play extends Phaser.Scene {
             },
         }
 
-        this.test = this.add.text(250, 25, this.word.string, wordConfig).setOrigin(0.5);
+        this.up_text = this.add.text(250, 25, this.up_word.string, wordConfig).setOrigin(0.5);
+        this.down_text = this.add.text(250, 325, this.down_word.string, wordConfig).setOrigin(0.5);
 
-        this.word.key = this.create_new_key(this.word.string);
+        this.up_word.key = this.create_new_up_key(this.up_word.string);
+        this.down_word.key = this.create_new_down_key(this.down_word.string);
 
         this.input.keyboard.on('keycombomatch', (combo, event) => {
             if (combo === up_key) { 
                 this.move_up = true;
             }  
-       });
+        });
+
+        this.input.keyboard.on('keycombomatch', (combo, event) => {
+            if (combo === down_key) { 
+                this.move_down = true;
+            }  
+        });
 
         this.min_point = 0;
         this.max_point = 100;
@@ -90,8 +97,17 @@ class Play extends Phaser.Scene {
         return Math.floor(Math.random() * max);
       }
 
-    create_new_key(string){
+    create_new_up_key(string){
         return up_key = this.input.keyboard.createCombo(string, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+    }
+
+    create_new_down_key(string){
+        return down_key = this.input.keyboard.createCombo(string, {
             resetOnWrongKey: true,  
             maxKeyDelay: 0,         
             resetOnMatch: true,     
@@ -116,20 +132,20 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
 
-        if (Phaser.Input.Keyboard.JustDown(keyDOWN)){
-            this.move_down = true;
-        }
-
         if (this.gameOver != true && this.move_up){
             this.dude.moveUp();
             this.num = this.getRandomInt(7);
-            this.word.swap_word(this.word_array[this.num]);
-            this.test.text = this.word.string;
-            this.up_key = this.create_new_key(this.word.string);
+            this.up_word.swap_word(this.up_word_array[this.num]);
+            this.up_text.text = this.up_word.string;
+            this.up_key = this.create_new_up_key(this.up_word.string);
             this.move_up = false;
         }
         if (this.gameOver != true && this.move_down){
             this.dude.moveDown();
+            this.num = this.getRandomInt(7);
+            this.down_word.swap_word(this.down_word_array[this.num]);
+            this.down_text.text = this.down_word.string;
+            this.down_key = this.create_new_down_key(this.down_word.string);
             this.move_down = false;
         }
 
