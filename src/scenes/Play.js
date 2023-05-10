@@ -62,11 +62,17 @@ class Play extends Phaser.Scene {
         //         this.add.sprite(0,0, 'skull').setRandomPosition();
         //     }  
         // });
+
+        this.min_point = 0;
+        this.max_point = 100;
+        this.speed = -80;
     }
 
     addRock(){
-        let rock = new Rock(this, -40);
-        this.rockGroup.add(rock);
+        if (this.score < this.max_point && this.score > this.min_point){ 
+            let rock = new Rock(this, this.speed);
+            this.rockGroup.add(rock);
+        }
     }
 
     update() {
@@ -77,6 +83,12 @@ class Play extends Phaser.Scene {
                 this.gameOver = false;
                 this.scene.start("gameOverScene");
             }, null, this);
+        }
+
+        if (this.score > this.max_point){
+            this.max_point += 100;
+            this.min_point += 100;
+            this.speed -= 80;
         }
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
@@ -102,7 +114,7 @@ class Play extends Phaser.Scene {
         //     }  
         // });
 
-        if (this.gameOver != true && this.score < 100) {
+        if (this.gameOver != true) {
             this.score += .05;
             this.scoreLeft.text = Math.floor(this.score);
         } 
