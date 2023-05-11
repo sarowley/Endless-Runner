@@ -20,7 +20,8 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.text(150, 75, 'Main Menu: Press Enter', menuConfig).setOrigin(0.5);
+        //this.add.text(150, 75, 'Main Menu: Press Enter', menuConfig).setOrigin(0.5);
+        this.background1 = this.add.tileSprite(0,0, 700, 350, 'title').setOrigin(0,0);
 
         //define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);

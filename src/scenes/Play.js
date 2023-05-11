@@ -3,16 +3,6 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
-    preload() {
-        //load images/tile sprites
-        this.load.atlas('dudeAtlas', 'assets/dudeAtlas.png', 'assets/dude-dude.json');
-        this.load.image('box', './assets/dude.png');
-        this.load.image('background', './assets/background.png');
-        this.load.image('spiral', './assets/spiral.png');
-        this.load.image('shapes', './assets/shapes.png');
-    }
-
-
     create() {
 
         //define keys
@@ -26,8 +16,8 @@ class Play extends Phaser.Scene {
         this.move_down = false;
 
         this.background1 = this.add.tileSprite(0,0, 700, 350, 'background').setOrigin(0,0);
-        this.shapes = this.add.tileSprite(0,0,700,350, 'shapes').setOrigin(0,0);        
-        this.spiral = this.add.tileSprite(0,0,700,350, 'spiral').setOrigin(0,0);
+        this.game_over_text = this.add.tileSprite(0,0, 700, 350, 'game_over').setOrigin(0,0);
+        this.game_over_text.setVisible(false);        
 
         this.dude = new Dude(this,115,175,'dudeAtlas').setOrigin(0.5);
 
@@ -58,8 +48,6 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '20px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
             align: 'right',
             padding: {
                 top: 5,
@@ -67,7 +55,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(75, 25, this.score, scoreConfig).setOrigin(0.5);
+        this.scoreLeft = this.add.text(75, 15, this.score, scoreConfig).setOrigin(0.5);
 
         this.up_word_array = ['yo', 'up', 'cat', 'dog', 'woop', 'help', 'howdy']
         this.down_word_array = ['woah', 'down', 'apple', 'dude', 'super', 'bummer', 'surf']
@@ -78,7 +66,6 @@ class Play extends Phaser.Scene {
         let wordConfig = {
             fontFamily: 'Courier',
             fontSize: '20px',
-            color: '#843605',
             align: 'right',
             padding: {
                 top: 5,
@@ -86,8 +73,8 @@ class Play extends Phaser.Scene {
             },
         }
 
-        this.up_text = this.add.text(250, 25, this.up_word.string, wordConfig).setOrigin(0.5);
-        this.down_text = this.add.text(250, 325, this.down_word.string, wordConfig).setOrigin(0.5);
+        this.up_text = this.add.text(350, 15, this.up_word.string, wordConfig).setOrigin(0.5);
+        this.down_text = this.add.text(350, 335, this.down_word.string, wordConfig).setOrigin(0.5);
 
         this.up_word.key = this.create_new_up_key(this.up_word.string);
         this.down_word.key = this.create_new_down_key(this.down_word.string);
@@ -106,56 +93,27 @@ class Play extends Phaser.Scene {
 
         this.min_point = 0;
         this.max_point = 100;
-        //this.max_point = 20;
         this.speed = -80;
         this.backgroundSpeed = 4;
-        this.spiralSpeed = 2;
-        this.shapesSpeed = 1;
-    }
-
-    addRock(){
-        if (this.score < this.max_point && this.score > this.min_point){ 
-            let rock = new Rock(this, this.speed, 'box');
-            this.rockGroup.add(rock);
-        }
-    }
-
-    getRandomInt(max) {
-        return Math.floor(Math.random() * max);
-      }
-
-    create_new_up_key(string){
-        return up_key = this.input.keyboard.createCombo(string, {
-            resetOnWrongKey: true,  
-            maxKeyDelay: 0,         
-            resetOnMatch: true,     
-            deleteOnMatch: false    
-        });
-    }
-
-    create_new_down_key(string){
-        return down_key = this.input.keyboard.createCombo(string, {
-            resetOnWrongKey: true,  
-            maxKeyDelay: 0,         
-            resetOnMatch: true,     
-            deleteOnMatch: false    
-        });
     }
 
     update() {
 
         if (!this.gameOver){
             this.background1.tilePositionX += this.backgroundSpeed;
-            this.spiral.tilePositionX += this.spiralSpeed;
-            //this.spiral.rotation += 0.01;
-            this.shapes.tilePositionX += this.shapesSpeed;
             }
 
         if (this.gameOver){
             this.clock = this.time.delayedCall(3000, () => {
-                this.gameOver = false;
-                this.scene.start("gameOverScene");
+                this.game_over_text.setVisible(true);
             }, null, this);
+        }
+
+        if (this.gameOver){
+            if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
+                this.gameOver = false;
+                this.scene.start('menuScene');    
+            }
         }
 
         if (this.score > this.max_point){
@@ -163,8 +121,6 @@ class Play extends Phaser.Scene {
             this.min_point += 100;
             this.speed -= 80;
             this.backgroundSpeed += 4;
-            this.spiralSpeed += 2;
-            this.shapesSpeed += 1;
         }
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
@@ -194,5 +150,35 @@ class Play extends Phaser.Scene {
 
     donezo (){
         this.gameOver = true;
+        this.speed = 0;
+    }
+
+    addRock(){
+        if (this.score < this.max_point && this.score > this.min_point){ 
+            let rock = new Rock(this, this.speed, 'enemy');
+            this.rockGroup.add(rock);
+        }
+    }
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+
+    create_new_up_key(string){
+        return up_key = this.input.keyboard.createCombo(string, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
+    }
+
+    create_new_down_key(string){
+        return down_key = this.input.keyboard.createCombo(string, {
+            resetOnWrongKey: true,  
+            maxKeyDelay: 0,         
+            resetOnMatch: true,     
+            deleteOnMatch: false    
+        });
     }
 }
