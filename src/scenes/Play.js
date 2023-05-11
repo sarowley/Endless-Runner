@@ -7,7 +7,11 @@ class Play extends Phaser.Scene {
         //load images/tile sprites
         this.load.atlas('dudeAtlas', 'assets/dudeAtlas.png', 'assets/dude-dude.json');
         this.load.image('box', './assets/dude.png');
+        this.load.image('background', './assets/background.png');
+        this.load.image('spiral', './assets/spiral.png');
+        this.load.image('shapes', './assets/shapes.png');
     }
+
 
     create() {
 
@@ -20,6 +24,10 @@ class Play extends Phaser.Scene {
         this.gameOver = false;
         this.move_up = false;
         this.move_down = false;
+
+        this.background1 = this.add.tileSprite(0,0, 700, 350, 'background').setOrigin(0,0);
+        this.shapes = this.add.tileSprite(0,0,700,350, 'shapes').setOrigin(0,0);        
+        this.spiral = this.add.tileSprite(0,0,700,350, 'spiral').setOrigin(0,0);
 
         this.dude = new Dude(this,115,175,'dudeAtlas').setOrigin(0.5);
 
@@ -98,7 +106,11 @@ class Play extends Phaser.Scene {
 
         this.min_point = 0;
         this.max_point = 100;
+        //this.max_point = 20;
         this.speed = -80;
+        this.backgroundSpeed = 4;
+        this.spiralSpeed = 2;
+        this.shapesSpeed = 1;
     }
 
     addRock(){
@@ -132,6 +144,13 @@ class Play extends Phaser.Scene {
 
     update() {
 
+        if (!this.gameOver){
+            this.background1.tilePositionX += this.backgroundSpeed;
+            this.spiral.tilePositionX += this.spiralSpeed;
+            //this.spiral.rotation += 0.01;
+            this.shapes.tilePositionX += this.shapesSpeed;
+            }
+
         if (this.gameOver){
             this.clock = this.time.delayedCall(3000, () => {
                 this.gameOver = false;
@@ -143,6 +162,9 @@ class Play extends Phaser.Scene {
             this.max_point += 100;
             this.min_point += 100;
             this.speed -= 80;
+            this.backgroundSpeed += 4;
+            this.spiralSpeed += 2;
+            this.shapesSpeed += 1;
         }
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
