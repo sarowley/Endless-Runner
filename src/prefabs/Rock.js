@@ -1,6 +1,6 @@
 class Rock extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, velocity) {
-        super(scene, 700, Phaser.Math.Between(55, 325), 'dude'); 
+    constructor(scene, velocity, texture) {
+        super(scene, 700, Phaser.Math.Between(55, 325), texture); 
         
         this.parentScene = scene;
 

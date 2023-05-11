@@ -5,6 +5,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         //load images/tile sprites
+        this.load.atlas('dudeAtlas', 'assets/dudeAtlas.png', 'assets/dude-dude.json');
         this.load.image('box', './assets/dude.png');
     }
 
@@ -20,7 +21,21 @@ class Play extends Phaser.Scene {
         this.move_up = false;
         this.move_down = false;
 
-        this.dude = new Dude(this,150,175,'box').setOrigin(0.5);
+        this.dude = new Dude(this,115,175,'dudeAtlas').setOrigin(0.5);
+
+        this.anims.create({
+            key: 'dudeAnim',
+            frameRate: 5,
+            frames: this.anims.generateFrameNames('dudeAtlas', {
+                prefix: "dude",
+                suffix: ".png",
+                start: 1,
+                end: 4,
+            }),
+            repeat: -1
+        });
+
+        this.dude.anims.play('dudeAnim');
 
         this.rockGroup = this.add.group({
             runChildUpdate: true
@@ -88,7 +103,7 @@ class Play extends Phaser.Scene {
 
     addRock(){
         if (this.score < this.max_point && this.score > this.min_point){ 
-            let rock = new Rock(this, this.speed);
+            let rock = new Rock(this, this.speed, 'box');
             this.rockGroup.add(rock);
         }
     }
