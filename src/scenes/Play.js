@@ -17,7 +17,15 @@ class Play extends Phaser.Scene {
 
         this.background1 = this.add.tileSprite(0,0, 700, 350, 'background').setOrigin(0,0);
         this.game_over_text = this.add.tileSprite(0,0, 700, 350, 'game_over').setOrigin(0,0);
-        this.game_over_text.setVisible(false);        
+        this.game_over_text.setVisible(false); 
+        
+        this.death_music = this.sound.add('death_music');
+        
+        this.music = this.sound.add('music');
+        this.music.loop = true;
+        this.music.play();
+
+        this.click = this.sound.add('click');
 
         this.dude = new Dude(this,115,175,'dudeAtlas').setOrigin(0.5);
 
@@ -112,6 +120,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver){
             if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
                 this.gameOver = false;
+                this.death_music.stop();
                 this.scene.start('menuScene');    
             }
         }
@@ -127,6 +136,7 @@ class Play extends Phaser.Scene {
 
         if (this.gameOver != true && this.move_up){
             this.dude.moveUp();
+            this.click.play();
             this.num = this.getRandomInt(7);
             this.up_word.swap_word(this.up_word_array[this.num]);
             this.up_text.text = this.up_word.string;
@@ -135,6 +145,7 @@ class Play extends Phaser.Scene {
         }
         if (this.gameOver != true && this.move_down){
             this.dude.moveDown();
+            this.click.play();
             this.num = this.getRandomInt(7);
             this.down_word.swap_word(this.down_word_array[this.num]);
             this.down_text.text = this.down_word.string;
@@ -150,6 +161,8 @@ class Play extends Phaser.Scene {
 
     donezo (){
         this.gameOver = true;
+        this.death_music.play();
+        this.music.stop();
         this.speed = 0;
     }
 

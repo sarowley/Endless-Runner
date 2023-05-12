@@ -22,11 +22,13 @@ class Load extends Phaser.Scene {
         this.load.image('enemy', './assets/enemy.png');
         this.load.image('title', './assets/title.png');
         this.load.image('game_over', './assets/game_over.png');
+        this.load.image('tutorial', './assets/tutorial.png');
+        this.load.audio('death_music', './assets/death_music.mp3');
+        this.load.audio('music', './assets/music.mp3');
+        this.load.audio('chicken', './assets/chicken.mp3');
+        this.load.audio('pop', './assets/pop.mp3');
+        this.load.audio('click', './assets/click.mp3');
 
-        // load audio assets
-        //this.load.audio('beats', ['audio/beats.mp3']);
-        //this.load.audio('clang', ['audio/clang.mp3']);
-        //this.load.audio('death', ['audio/death.mp3']);
     }
 
     create() {

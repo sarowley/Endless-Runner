@@ -20,16 +20,38 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        //this.add.text(150, 75, 'Main Menu: Press Enter', menuConfig).setOrigin(0.5);
         this.background1 = this.add.tileSprite(0,0, 700, 350, 'title').setOrigin(0,0);
+        this.tutorial = this.add.tileSprite(0,0, 700, 350, 'tutorial').setOrigin(0,0);
+        this.tutorial.setVisible(false);
+        this.check = false;
+
+        this.chicken = this.sound.add('chicken');
+        this.chicken.loop = true;
+        this.chicken.play();
+
+        this.pop = this.sound.add('pop');
+        //this.pop.play();
 
         //define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyBACK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
-          this.scene.start('playScene');    
+            this.chicken.stop();
+            this.pop.play();
+            this.scene.start('playScene');    
         }
+        if (Phaser.Input.Keyboard.JustDown(keyBACK)) {
+            if (this.check == false){
+                this.tutorial.setVisible(true);
+                this.check = true;    
+            }
+            else if (this.check == true){
+                this.tutorial.setVisible(false); 
+                this.check = false;   
+            }
+          }
       }
 }
