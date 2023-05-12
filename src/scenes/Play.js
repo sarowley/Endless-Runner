@@ -65,9 +65,9 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(75, 15, this.score, scoreConfig).setOrigin(0.5);
 
-        this.up_word_array = ['yo', 'up', 'cat', 'dog', 'woop', 'help', 'howdy']
-        this.down_word_array = ['woah', 'down', 'apple', 'dude', 'super', 'bummer', 'surf']
-        this.num = this.getRandomInt(7);
+        this.up_word_array = ['up', 'cat', 'space', 'alien', 'dude', 'typing', 'help', 'wallet', 'queue', 'vector', 'sonic', 'water', 'bipedal', 'laptop', 'cowabunga', 'telescope']
+        this.down_word_array = ['down', 'dog', 'earth', 'human', 'bummer', 'call', 'attempt', 'jacket', 'poster', 'ring', 'book', 'bimodal', 'computer', 'stack', 'howdy', 'telecommunications']
+        this.num = this.getRandomInt(16);
         this.up_word = new KeyComboObject(this.up_word_array[this.num]);
         this.down_word = new KeyComboObject(this.down_word_array[this.num]);
 
@@ -129,7 +129,7 @@ class Play extends Phaser.Scene {
             this.max_point += 100;
             this.min_point += 100;
             this.speed -= 80;
-            this.backgroundSpeed += 4;
+            this.backgroundSpeed += 2;
         }
 
         this.physics.world.collide(this.dude, this.rockGroup, this.donezo, null, this);
@@ -137,7 +137,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver != true && this.move_up){
             this.dude.moveUp();
             this.click.play();
-            this.num = this.getRandomInt(7);
+            this.num = this.getRandomInt(16);
             this.up_word.swap_word(this.up_word_array[this.num]);
             this.up_text.text = this.up_word.string;
             this.up_key = this.create_new_up_key(this.up_word.string);
@@ -146,7 +146,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver != true && this.move_down){
             this.dude.moveDown();
             this.click.play();
-            this.num = this.getRandomInt(7);
+            this.num = this.getRandomInt(16);
             this.down_word.swap_word(this.down_word_array[this.num]);
             this.down_text.text = this.down_word.string;
             this.down_key = this.create_new_down_key(this.down_word.string);

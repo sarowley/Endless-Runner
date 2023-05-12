@@ -30,7 +30,6 @@ class Menu extends Phaser.Scene {
         this.chicken.play();
 
         this.pop = this.sound.add('pop');
-        //this.pop.play();
 
         //define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
